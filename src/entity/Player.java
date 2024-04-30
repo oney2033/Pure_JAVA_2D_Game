@@ -11,6 +11,8 @@ public class Player extends Mob{
 	private Sprite sprite;
 	private int anim = 0;
 	private boolean walking = false;
+	private int fireRate = 0;
+	
 	public Player(keyboard input)
 	{
 		this.input = input;
@@ -22,10 +24,12 @@ public class Player extends Mob{
 		this.x = x;
 		this.y = y;
 		this.input = input;
+		fireRate = WizarProjectile.FIRE_RATE;
 	}
 	
 	public void update()
 	{
+		if(fireRate > 0)fireRate--;
 		int xa = 0, ya = 0;
 		if(anim < 7500) anim++;
 		else anim = 0;
@@ -43,18 +47,30 @@ public class Player extends Mob{
 		{
 			walking = false;
 		}
-		
+		clear();
 		updateShooting();
 	}
 	
+	private void clear() 
+	{
+		for(int  i = 0; i < level.getProjectiles().size(); i++)
+		{
+			Projectile p = level.getProjectiles().get(i);
+			if(p.isRemove())level.getProjectiles().remove(i);
+		}
+	}
+
 	private void updateShooting()
 	{
-		if(Mouese.getButton()==1)
+		if(Mouese.getButton()==1 && fireRate <= 0)
 		{
 			double dx = Mouese.getX() - Game.getWindowWidth() / 2;
 			double dy = Mouese.getY() - Game.getWindowHeight() / 2;
 			double dir = Math.atan2(dy, dx);
+			//double trueangle = dir * 180/Math.PI;
+			//System.out.println("truedir" + trueangle);
 			shoot(x,y,dir);
+			fireRate = WizarProjectile.FIRE_RATE;
 		}
 	}
 	

@@ -4,6 +4,8 @@ import java.util.Random;
 
 import com.level.Tile;
 
+import entity.Projectile;
+
 public class Screen {
 	public int width, height;
 	public int[] Pixels;
@@ -37,6 +39,25 @@ public class Screen {
 		}
 	}
 	
+	public void renderSprite(int xp, int yp, Sprite sprite, boolean fixed)
+	{
+		if(fixed)
+		{
+			xp -=xOffset;
+			yp -=yOffset;			
+		}
+		for(int y = 0; y < sprite.getHeight(); y++)
+		{
+			int ya = y + yp;
+			for(int x = 0; x < sprite.getWidth(); x++)
+			{
+				int xa = x + xp;
+				if(xa < 0 || xa >= width || ya < 0 || ya >= height)continue;
+				Pixels[xa + ya * width] = sprite.Pixels[x + y * sprite.getWidth()];
+			}
+		}
+		
+	}
 
 	public void Render(int xoffset,int yoffset)
 	{
@@ -71,20 +92,22 @@ public class Screen {
 		}
 	}
 	
-	public void renderTile(int xp, int yp, Sprite sprite)
+	public void renderProjectile(int xp, int yp, Projectile p)
 	{
 		xp -=xOffset;
 		yp -=yOffset;
-		for(int y = 0; y < sprite.SIZE; y++)
+		for(int y = 0; y < p.getSpriteSize(); y++)
 		{
 			int ya = y + yp;
-			for(int x = 0; x < sprite.SIZE; x++)
+			for(int x = 0; x < p.getSpriteSize(); x++)
 			{
 				int xa = x + xp;
 				//当一个图块超出了屏幕范围后，停止渲染这个图块,就是只渲染我们看得到的图块
-				if(ya < 0 || ya >= height || xa < -sprite.SIZE || xa >=width)break;
+				if(ya < 0 || ya >= height || xa < -p.getSpriteSize() || xa >=width)break;
 				if(xa < 0)xa=0;
-				Pixels[xa + ya * width] = sprite.Pixels[x + y * sprite.SIZE];
+				int col = p.getSprite().Pixels[x + y * p.getSprite().SIZE];
+				if(col != 0xffff00ff) 
+					Pixels[xa + ya * width] = col;
 			}
 		}
 	}

@@ -5,6 +5,7 @@ public class Sprite {
 	public final int SIZE;
 	private int x, y;
 	public int[] Pixels;
+	private int width, height;
 	private SpriteSheet sheet;
 	
 	public static Sprite grass = new Sprite(16,0,5,SpriteSheet.tiles);
@@ -37,9 +38,17 @@ public class Sprite {
 	public static Sprite player_back_1 = new Sprite(32,2,6,SpriteSheet.tiles);
 	public static Sprite player_back_2 = new Sprite(32,2,7,SpriteSheet.tiles);
 	
+	//projectile Sprites here:
+	public static Sprite projectile_wizard = new Sprite(16,0,0,SpriteSheet.projectile_wisard);
+	
+	//Particles
+	public static Sprite particle_normal = new Sprite(3,0xff00ff);
+	
 	public Sprite(int size, int x, int y, SpriteSheet sheet)
 	{
 		SIZE = size;
+		this.width = size;
+		this.height = size;
 		Pixels = new int[SIZE * SIZE];
 		this.x = x * size;
 		this.y = y * size;
@@ -47,16 +56,38 @@ public class Sprite {
 		load();
 	}
 	
+	public Sprite(int width, int height, int colour)
+	{
+		SIZE = -1;
+		this.width = width;
+		this.height = height;
+		Pixels = new int[width * height];
+		setColour(colour);
+		
+	}
+	
 	public Sprite(int size, int colour)
 	{
+		this.width = size;
+		this.height = size;
 		SIZE = size;
 		Pixels = new int[SIZE * SIZE];
 		setColour(colour);
 	}
 	
+	public int getWidth()
+	{
+		return width;
+	}
+	
+	public int getHeight()
+	{
+		return height;
+	}
+	
 	public void setColour(int colour)
 	{
-		for(int i = 0; i < SIZE * SIZE; i++)
+		for(int i = 0; i < width * height; i++)
 		{
 			Pixels[i] = colour;
 		}

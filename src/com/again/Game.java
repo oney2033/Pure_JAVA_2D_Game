@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -51,7 +52,7 @@ public class Game extends Canvas implements Runnable
 		//level = new RandomLevel(64,64);
 		//level = new SpawnLevel("resa/textures/levels/level.png");
 		level = level.spawn;
-		TileCoordinate playerSpawn = new TileCoordinate(19,62);
+		TileCoordinate playerSpawn = new TileCoordinate(19,8);
 		player = new Player(playerSpawn.x(),playerSpawn.y(),key);
 		player.init(level);
 		addKeyListener(key);
@@ -148,7 +149,18 @@ public class Game extends Canvas implements Runnable
 		//level.render(player.x, player.y, screen);
 		//screen.Render(x,y);
 		player.render(screen);
-			
+		
+		/*
+		Sprite sprite = new Sprite(2,2,0xff00ff);
+		Random random = new Random();
+		for(int i = 0; i < 100; i++)
+		{
+			int x = random.nextInt(20);
+			int y = random.nextInt(20);
+			screen.renderSprite(width - 60 + x, 50 + y, sprite, true);
+		}
+		*/
+		
 		for(int i = 0; i < pixels.length; i++)
 		{
 			pixels[i] = screen.Pixels[i];
@@ -156,13 +168,13 @@ public class Game extends Canvas implements Runnable
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image,0,0,getWidth(),getHeight(),null);
 		g.setColor(Color.white);
-		g.setFont(new Font("Verdand",0,50));
-		g.drawString("X: " + player.x + ", Y: " + player.y, 450, 400);
-		g.setColor(Color.white);
-		g.setFont(new Font("Verdan",0,50));
-		g.fillRect(Mouese.getX()-32, Mouese.getY()-32, 64, 64);
+		g.setFont(new Font("Verdand",0,20));
+		g.drawString("X: " + player.x + ", Y: " + player.y, 150, 100);
+		//g.setColor(Color.white);
+		//g.setFont(new Font("Verdan",0,50));
+		//g.fillRect(Mouese.getX()-32, Mouese.getY()-32, 64, 64);
 		//if(Mouese.getButton() != -1)
-		g.drawString("Button: " + Mouese.getButton(),80,80);
+		//g.drawString("Button: " + Mouese.getButton(),80,80);
 		g.dispose();
 		bs.show();
 		

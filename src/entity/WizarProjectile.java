@@ -2,34 +2,58 @@ package entity;
 
 import com.again.Screen;
 import com.again.Sprite;
+import com.spawner.ParticleSpawner;
+import com.spawner.Spawner;
 
 public class WizarProjectile extends Projectile{
 
+	public static final int FIRE_RATE = 8;
+	
+	
 	public WizarProjectile(int x, int y, double dir)
 	{
 		super(x, y, dir);
-		range = 300;
-		damage = 20;
-		speed = 4;
-		rateOfFire = 15;
-		sprite = Sprite.grass;
+		range = 100;
+		damage = 4;
+		speed = 2;
+		sprite = Sprite.projectile_wizard;
 		nx = speed * Math.cos(angle);
-		ny = speed * Math.sin(angle);	
+		ny = speed * Math.sin(angle);
+		//System.out.println("nx" + nx+" ny "+ ny);
 	}
 	
 	public void update()
 	{
+		if(level.tilecollision((int)(x + nx), (int)(y + ny),7,0,8))
+		{
+			level.add(new ParticleSpawner((int)x, (int)y, 44, 50, level));
+			remove();
+		}
 		move();
+		//System.out.println("move");
 	}
 	
 	public void move()
 	{
-		x += nx;
-		y += ny;
+			x += nx;
+			y += ny;
+		if(distance() > range)remove();
+		//System.out.println("Distance: " + distance());
 	}
 	
+	private double distance() 
+	{
+		double dist = 0;
+		double xy2 = 0;
+		xy2 = Math.abs((xOrigin - x) * (xOrigin - x)) + Math.abs((yOrigin - y) * (yOrigin - y));
+		//dist = Math.sqrt(Math.abs((xOrigin - x) * (xOrigin - x) + (yOrigin - y) * (yOrigin - y)));
+		dist = Math.sqrt(xy2);
+		return dist;
+	}
+
 	public void render(Screen screen)
 	{
-		screen.renderTile(x, y,sprite);
+		screen.renderProjectile((int)x - 12, (int)y - 2,this);
+		//System.out.println("x" + x+","+" y "+ y);
 	}
 }
