@@ -6,6 +6,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import entity.Chaser;
+import entity.DummyMob;
+import entity.Star;
+
 public class SpawnLevel extends Level {
 	
 	//private Tile[] tiles;
@@ -30,6 +34,12 @@ public class SpawnLevel extends Level {
 			e.printStackTrace();
 			System.out.println("Exception! Could not load level file!");
 		}
+		for(int i = 0; i < 5; i++) 
+		{	
+			add(new DummyMob(19,8));
+		}
+		add(new Star(20,20));
+		add(new Chaser(22,18));
 	}
 	
 	//0xff00ff6f

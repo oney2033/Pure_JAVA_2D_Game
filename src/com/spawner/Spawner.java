@@ -8,7 +8,7 @@ import com.level.Level;
 import entity.Entity;
 import entity.Particle;
 
-public class Spawner extends Entity{
+public abstract class Spawner extends Entity{
 		
 	public enum Type
 	{

@@ -1,9 +1,13 @@
 package entity;
 
+import java.util.List;
+
+import com.again.AnimatedSprite;
 import com.again.Game;
 import com.again.Mouese;
 import com.again.Screen;
 import com.again.Sprite;
+import com.again.SpriteSheet;
 import com.again.keyboard;
 
 public class Player extends Mob{
@@ -13,10 +17,18 @@ public class Player extends Mob{
 	private boolean walking = false;
 	private int fireRate = 0;
 	
+	private AnimatedSprite down = new AnimatedSprite(SpriteSheet.player_down,32, 32, 3);
+	private AnimatedSprite up = new AnimatedSprite(SpriteSheet.player_up,32, 32, 3);
+	private AnimatedSprite left = new AnimatedSprite(SpriteSheet.player_left,32, 32, 3);
+	private AnimatedSprite right = new AnimatedSprite(SpriteSheet.player_right,32, 32, 3);
+	
+	private AnimatedSprite animSprite = down;
+	
 	public Player(keyboard input)
 	{
 		this.input = input;
 		sprite = sprite.player_forward;
+		//animSprite = down;
 	}
 	
 	public Player(int x, int y,keyboard input)
@@ -29,14 +41,42 @@ public class Player extends Mob{
 	
 	public void update()
 	{
+		/*
+		List<Entity> es = level.getEntities(this, 80);
+		System.out.println(es.size());
+		for(Entity e : es)
+		{
+			System.out.println(e);
+		}
+		*/
+		
+		if(walking)animSprite.update();
+		else animSprite.setFrame(0);
 		if(fireRate > 0)fireRate--;
-		int xa = 0, ya = 0;
+		double xa = 0, ya = 0;
+		double speed =2.0;
 		if(anim < 7500) anim++;
 		else anim = 0;
-		if(input.up) ya--;
-		if(input.down) ya++;
-		if(input.left) xa--;
-		if(input.right) xa++;
+		if(input.up) 
+		{
+			ya-= speed;
+			animSprite = up;
+		}
+		else if(input.down) 
+		{
+			ya+= speed;
+			animSprite = down;
+		}
+		 if(input.left) 
+		{
+			xa-= speed;
+			animSprite = left;
+		}
+		 else if(input.right) 
+		{
+			xa+= speed;
+			animSprite = right;
+		}
 				
 		if(xa != 0 || ya != 0)
 		{			
@@ -76,8 +116,8 @@ public class Player extends Mob{
 	
 	public void render(Screen screen)
 	{
-	
 		int flip = 0;
+	/*
 		if(dir == 0)
 		{
 			sprite = sprite.player_forward;
@@ -141,15 +181,9 @@ public class Player extends Mob{
 					}
 				}
 			}
-		
-		//if(dir == 3)sprite = sprite.player_left;
-		//int xx = x-16;
-		//int yy = y-16
-		screen.renderPlayer(x-16, y-16, sprite,flip);
-		
-		//screen.renderPlayer(xx + 16, yy, sprite.player1);
-		//screen.renderPlayer(xx, yy + 16, sprite.player2);
-		//screen.renderPlayer(xx + 16, yy + 16, sprite.player3);
+			*/
+		sprite = animSprite.getSprite();
+		screen.renderMob((int)(x-16), (int)(y-16), sprite,flip);
 	}
 	
 

@@ -6,7 +6,7 @@ public class Sprite {
 	private int x, y;
 	public int[] Pixels;
 	private int width, height;
-	private SpriteSheet sheet;
+	protected SpriteSheet sheet;
 	
 	public static Sprite grass = new Sprite(16,0,5,SpriteSheet.tiles);
 	public static Sprite flower = new Sprite(16,1,0,SpriteSheet.tiles);
@@ -38,11 +38,30 @@ public class Sprite {
 	public static Sprite player_back_1 = new Sprite(32,2,6,SpriteSheet.tiles);
 	public static Sprite player_back_2 = new Sprite(32,2,7,SpriteSheet.tiles);
 	
+	public static Sprite dummy = new Sprite(32,0,0,SpriteSheet.dummy_down);
+	
 	//projectile Sprites here:
 	public static Sprite projectile_wizard = new Sprite(16,0,0,SpriteSheet.projectile_wisard);
 	
 	//Particles
-	public static Sprite particle_normal = new Sprite(3,0xff00ff);
+	public static Sprite particle_normal = new Sprite(3,0xffff00ff);
+	public static Sprite square = new Sprite(2,0xff0000);
+	
+	protected Sprite(SpriteSheet sheet,int width, int height)
+	{
+		SIZE = (width == height) ? width : -1;
+		this.width = width;
+		this.height = height;
+		this.sheet = sheet;
+	}
+	
+	public Sprite(int[] pixels, int width, int height) 
+	{
+		SIZE = (width == height) ? width : -1;
+		this.width = width;
+		this.height = height;
+		this.Pixels = pixels;
+	}
 	
 	public Sprite(int size, int x, int y, SpriteSheet sheet)
 	{
@@ -63,7 +82,6 @@ public class Sprite {
 		this.height = height;
 		Pixels = new int[width * height];
 		setColour(colour);
-		
 	}
 	
 	public Sprite(int size, int colour)
@@ -75,6 +93,7 @@ public class Sprite {
 		setColour(colour);
 	}
 	
+
 	public int getWidth()
 	{
 		return width;
@@ -95,11 +114,11 @@ public class Sprite {
 	
 	private void load()
 	{
-		for(int y = 0; y < SIZE; y++)
+		for(int y = 0; y < height; y++)
 		{
-			for(int x = 0; x < SIZE; x++)
+			for(int x = 0; x < width; x++)
 			{
-				Pixels[x + y * SIZE] = sheet.Pixels[(x + this.x) + (y + this.y) * sheet.SIZE];
+				Pixels[x + y * width] = sheet.Pixels[(x + this.x) + (y + this.y) * sheet.WIDTH];
 			}
 		}
 	}

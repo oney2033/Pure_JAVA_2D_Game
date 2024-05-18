@@ -10,7 +10,7 @@ public class WizarProjectile extends Projectile{
 	public static final int FIRE_RATE = 8;
 	
 	
-	public WizarProjectile(int x, int y, double dir)
+	public WizarProjectile(double x, double y, double dir)
 	{
 		super(x, y, dir);
 		range = 100;
@@ -46,7 +46,6 @@ public class WizarProjectile extends Projectile{
 		double dist = 0;
 		double xy2 = 0;
 		xy2 = Math.abs((xOrigin - x) * (xOrigin - x)) + Math.abs((yOrigin - y) * (yOrigin - y));
-		//dist = Math.sqrt(Math.abs((xOrigin - x) * (xOrigin - x) + (yOrigin - y) * (yOrigin - y)));
 		dist = Math.sqrt(xy2);
 		return dist;
 	}
